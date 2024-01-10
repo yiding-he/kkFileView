@@ -45,6 +45,11 @@ public class BsmChannel implements Channel {
       throw new FileTypeNotSupportedException(message);
     }
 
+    if (!node.has("url")) {
+      throw new FileTypeNotSupportedException(
+        "获取文件地址返回内容为空, uri=" + uri + ", resp=" + responseJson);
+    }
+
     var fileUrl = node.get("url").asText();
     var fileType = FileType.typeFromUrl(fileUrl);
     var fileName = FilenameUtils.getName(fileUrl);
