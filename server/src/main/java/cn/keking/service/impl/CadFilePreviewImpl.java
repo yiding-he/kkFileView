@@ -10,7 +10,6 @@ import cn.keking.utils.KkFileUtils;
 import cn.keking.web.filter.BaseUrlFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import static cn.keking.service.impl.OfficeFilePreviewImpl.getPreviewType;
@@ -38,7 +37,7 @@ public class CadFilePreviewImpl implements FilePreview {
         // 预览Type，参数传了就取参数的，没传取系统默认
         String officePreviewType = fileAttribute.getOfficePreviewType() == null ? ConfigConstants.getOfficePreviewType() : fileAttribute.getOfficePreviewType();
         String baseUrl = BaseUrlFilter.getBaseUrl();
-        boolean forceUpdatedCache = fileAttribute.forceUpdatedCache();
+        boolean forceUpdatedCache = fileAttribute.isForceUpdatedCache();
         String fileName = fileAttribute.getName();
         String cadPreviewType = ConfigConstants.getCadPreviewType();
         String cacheName = fileAttribute.getCacheName();

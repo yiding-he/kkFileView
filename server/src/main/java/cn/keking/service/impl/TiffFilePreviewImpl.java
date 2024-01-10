@@ -10,9 +10,7 @@ import cn.keking.utils.DownloadUtils;
 import cn.keking.utils.KkFileUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.util.ObjectUtils;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -36,7 +34,7 @@ public class TiffFilePreviewImpl implements FilePreview {
         String tifPreviewType = ConfigConstants.getTifPreviewType();
         String cacheName =  fileAttribute.getCacheName();
         String outFilePath = fileAttribute.getOutFilePath();
-        boolean forceUpdatedCache=fileAttribute.forceUpdatedCache();
+        boolean forceUpdatedCache=fileAttribute.isForceUpdatedCache();
         if ("jpg".equalsIgnoreCase(tifPreviewType) || "pdf".equalsIgnoreCase(tifPreviewType)) {
             if (forceUpdatedCache || !fileHandlerService.listConvertedFiles().containsKey(cacheName) || !ConfigConstants.isCacheEnabled()) {
                 ReturnResponse<String> response = DownloadUtils.downLoad(fileAttribute, fileName);

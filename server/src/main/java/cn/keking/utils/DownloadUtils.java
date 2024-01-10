@@ -11,10 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RequestCallback;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
@@ -22,7 +20,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.UUID;
@@ -80,14 +77,14 @@ public class DownloadUtils {
             return response;
         }
         // 如果文件是否已经存在、且不强制更新，则直接返回文件路径
-        if (KkFileUtils.isExist(realPath) && !fileAttribute.forceUpdatedCache()) {
+        if (KkFileUtils.isExist(realPath) && !fileAttribute.isForceUpdatedCache()) {
             response.setContent(realPath);
             response.setMsg(fileName);
             return response;
         }
         try {
             URL url = WebUtils.normalizedURL(urlStr);
-            if (!fileAttribute.getSkipDownLoad()) {
+            if (!fileAttribute.isSkipDownLoad()) {
                 if (isHttpUrl(url)) {
                     File realFile = new File(realPath);
                     SimpleClientHttpRequestFactory httpFactory = new SimpleClientHttpRequestFactory();

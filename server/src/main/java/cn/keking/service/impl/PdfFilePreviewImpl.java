@@ -3,16 +3,15 @@ package cn.keking.service.impl;
 import cn.keking.config.ConfigConstants;
 import cn.keking.model.FileAttribute;
 import cn.keking.model.ReturnResponse;
+import cn.keking.service.FileHandlerService;
 import cn.keking.service.FilePreview;
 import cn.keking.utils.DownloadUtils;
-import cn.keking.service.FileHandlerService;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.poi.EncryptedDocumentException;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.List;
 
 /**
@@ -33,7 +32,7 @@ public class PdfFilePreviewImpl implements FilePreview {
     public String filePreviewHandle(String url, Model model, FileAttribute fileAttribute) {
         String pdfName = fileAttribute.getName();  //获取原始文件名
         String officePreviewType = fileAttribute.getOfficePreviewType(); //转换类型
-        boolean forceUpdatedCache=fileAttribute.forceUpdatedCache();  //是否启用强制更新命令
+        boolean forceUpdatedCache=fileAttribute.isForceUpdatedCache();  //是否启用强制更新命令
         String outFilePath = fileAttribute.getOutFilePath();  //生成的文件路径
         String originFilePath = fileAttribute.getOriginFilePath();  //原始文件路径
         if (OfficeFilePreviewImpl.OFFICE_PREVIEW_TYPE_IMAGE.equals(officePreviewType) || OfficeFilePreviewImpl.OFFICE_PREVIEW_TYPE_ALL_IMAGES.equals(officePreviewType)) {

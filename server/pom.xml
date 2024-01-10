@@ -201,12 +201,14 @@
       <artifactId>aspose-cad</artifactId>
       <version>${aspose-cad.version}</version>
     </dependency>
+
     <!-- 密钥算法 -->
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcprov-jdk15on</artifactId>
       <version>${bcprov-jdk15on.version}</version>
     </dependency>
+
     <!-- url 规范化 -->
     <dependency>
       <groupId>io.mola.galimatias</groupId>
@@ -269,7 +271,7 @@
       <version>${itextpdf.version}</version>
     </dependency>
 
-    <!-- test dependency - start -->
+    <!-- Unit Testing -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
@@ -287,7 +289,17 @@
         </exclusion>
       </exclusions>
     </dependency>
-    <!-- test dependency - end -->
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-launcher</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Source Code Processing -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+    </dependency>
   </dependencies>
 
   <profiles>

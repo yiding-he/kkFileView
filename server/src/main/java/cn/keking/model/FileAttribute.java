@@ -1,185 +1,106 @@
 package cn.keking.model;
 
 import cn.keking.config.ConfigConstants;
+import lombok.Data;
+
+import java.util.Set;
+
+import static cn.keking.service.FileHandlerService.getCacheFileName;
 
 /**
  * Created by kl on 2018/1/17.
  * Content :
  */
+@Data
 public class FileAttribute {
 
-    private FileType type;
-    private String suffix;
-    private String name;
-    private String url;
-    private boolean isCompressFile = false;
-    private String compressFileKey;
-    private String filePassword;
-    private boolean usePasswordCache;
-    private String officePreviewType = ConfigConstants.getOfficePreviewType();
-    private String tifPreviewType;
-    private Boolean skipDownLoad = false;
-    private Boolean forceUpdatedCache = false;
-    private String cacheName;
-    private String outFilePath;
-    private String originFilePath;
-    private String cacheListName;
-    private boolean isHtmlView = false;
+  /**
+   * 文件类型
+   */
+  private FileType type;
 
-    /**
-     * 代理请求到文件服务器的认证请求头，格式如下：
-     * {“username”:"test","password":"test"}
-     * 请求文件服务器时，会将 json 直接塞到请求头里
-     */
-    private String kkProxyAuthorization;
+  /**
+   * 文件后缀名，不带 "."
+   */
+  private String suffix;
 
-    public FileAttribute() {
-    }
+  /**
+   * 完整文件名
+   */
+  private String name;
 
-    public FileAttribute(FileType type, String suffix, String name, String url) {
-        this.type = type;
-        this.suffix = suffix;
-        this.name = name;
-        this.url = url;
-    }
+  /**
+   * 文件原始地址，如果有的话
+   */
+  private String url;
 
-    public FileAttribute(FileType type, String suffix, String name, String url, String officePreviewType) {
-        this.type = type;
-        this.suffix = suffix;
-        this.name = name;
-        this.url = url;
-        this.officePreviewType = officePreviewType;
-    }
+  private boolean isCompressFile = false;
 
-    public boolean isCompressFile() {
-        return isCompressFile;
-    }
+  private String compressFileKey;
 
-    public void setCompressFile(boolean compressFile) {
-        isCompressFile = compressFile;
-    }
+  private String filePassword;
 
-    public String getFilePassword() {
-        return filePassword;
-    }
+  private boolean usePasswordCache;
 
-    public void setFilePassword(String filePassword) {
-        this.filePassword = filePassword;
-    }
+  private String officePreviewType = ConfigConstants.getOfficePreviewType();
 
-    public boolean getUsePasswordCache() {
-        return usePasswordCache;
-    }
+  private String tifPreviewType;
 
-    public void setUsePasswordCache(boolean usePasswordCache) {
-        this.usePasswordCache = usePasswordCache;
-    }
+  private boolean skipDownLoad = false;
 
-    public String getOfficePreviewType() {
-        return officePreviewType;
-    }
+  private boolean forceUpdatedCache = false;
 
-    public void setOfficePreviewType(String officePreviewType) {
-        this.officePreviewType = officePreviewType;
-    }
+  private String cacheName;
 
-    public FileType getType() {
-        return type;
-    }
+  private String outFilePath;
 
-    public void setType(FileType type) {
-        this.type = type;
-    }
+  private String originFilePath;
 
-    public String getSuffix() {
-        return suffix;
-    }
+  private String cacheListName;
 
-    public void setSuffix(String suffix) {
-        this.suffix = suffix;
-    }
+  private boolean htmlView = false;
 
-    public String getCompressFileKey() {
-        return compressFileKey;
-    }
+  /**
+   * 代理请求到文件服务器的认证请求头，格式如下：
+   * {“username”:"test","password":"test"}
+   * 请求文件服务器时，会将 json 直接塞到请求头里
+   */
+  private String kkProxyAuthorization;
 
-    public void setCompressFileKey(String compressFileKey) {
-        this.compressFileKey = compressFileKey;
-    }
+  public FileAttribute() {
+  }
 
-    public String getName() {
-        return name;
-    }
-    public String getCacheName() {
-        return cacheName;
-    }
-    public String getCacheListName() {
-        return cacheListName;
-    }
-    public String getOutFilePath() {
-        return outFilePath;
-    }
-    public String getOriginFilePath() {
-        return originFilePath;
-    }
-    public boolean isHtmlView() {
-        return isHtmlView;
-    }
+  public FileAttribute(FileType type, String suffix, String name, String url) {
+    this.type = type;
+    this.suffix = suffix;
+    this.name = name;
+    this.url = url;
+  }
 
-    public void setCacheName(String cacheName) {
-        this.cacheName = cacheName;
-    }
-    public void setCacheListName(String cacheListName) {
-        this.cacheListName = cacheListName;
-    }
-    public void setOutFilePath(String outFilePath) {
-        this.outFilePath = outFilePath;
-    }
-    public void setOriginFilePath(String originFilePath) {
-        this.originFilePath = originFilePath;
-    }
-    public void setHtmlView(boolean isHtmlView) {
-        this.isHtmlView = isHtmlView;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
+  public FileAttribute(FileType type, String suffix, String name, String url, String officePreviewType) {
+    this.type = type;
+    this.suffix = suffix;
+    this.name = name;
+    this.url = url;
+    this.officePreviewType = officePreviewType;
+  }
 
-    public String getUrl() {
-        return url;
-    }
+  ////////////////////////////////////////
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+  public static final Set<String> HTML_VIEW_SUFFIX = Set.of(
+    "xls", "xlsx", "csv", "xlsm", "xlt", "xltm", "et", "ett", "xlam"
+  );
 
-    public Boolean getSkipDownLoad() {
-        return skipDownLoad;
-    }
-
-    public void setSkipDownLoad(Boolean skipDownLoad) {
-        this.skipDownLoad = skipDownLoad;
-    }
-
-    public String getTifPreviewType() {
-        return tifPreviewType;
-    }
-
-    public void setTifPreviewType(String previewType) {
-        this.tifPreviewType = previewType;
-    }
-    public Boolean forceUpdatedCache() {
-        return forceUpdatedCache;
-    }
-    public void setForceUpdatedCache(Boolean forceUpdatedCache) {
-        this.forceUpdatedCache = forceUpdatedCache;
-    }
-
-    public String getKkProxyAuthorization() {
-        return kkProxyAuthorization;
-    }
-
-    public void setKkProxyAuthorization(String kkProxyAuthorization) {
-        this.kkProxyAuthorization = kkProxyAuthorization;
-    }
+  /**
+   * 根据构造方法的参数自行组装，不是每种场景都要这么做，所以没有在构造方法中调用
+   */
+  public FileAttribute selfAssemble() {
+    this.htmlView = HTML_VIEW_SUFFIX.contains(suffix.toLowerCase());
+    String cacheFilePrefixName = name.substring(0, name.lastIndexOf(".")) + suffix + "."; //这里统一文件名处理 下面更具类型 各自添加后缀
+    String cacheFileName = getCacheFileName(type, name, cacheFilePrefixName, htmlView, isCompressFile);
+    String cacheListName = cacheFilePrefixName + "ListName";  //文件列表缓存文件名
+    setCacheName(cacheFileName);
+    setCacheListName(cacheListName);
+    return this;
+  }
 }

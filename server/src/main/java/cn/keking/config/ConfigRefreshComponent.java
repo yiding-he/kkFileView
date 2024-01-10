@@ -1,8 +1,7 @@
 package cn.keking.config;
 
 import cn.keking.utils.ConfigUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -23,11 +22,10 @@ import java.util.concurrent.TimeUnit;
  * @since 2019/4/10 16:16
  */
 @Component
+@Slf4j
 public class ConfigRefreshComponent {
 
   public static final String CONFIG_FILE_PATH = ConfigUtils.getCustomizedConfigPath();
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(ConfigRefreshComponent.class);
 
   @PostConstruct
   private void init() {
@@ -37,6 +35,7 @@ public class ConfigRefreshComponent {
       return;
     }
 
+    log.info("找到可刷新的配置文件 {}", CONFIG_FILE_PATH);
     Timer timer = new Timer(true);
     timer.schedule(new TimerTask() {
       @Override
@@ -44,7 +43,7 @@ public class ConfigRefreshComponent {
         try {
           new ConfigRefreshTask().run();
         } catch (Exception e) {
-          LOGGER.error("", e);
+          log.error("", e);
         }
       }
     }, 10000, 60000);
@@ -194,7 +193,7 @@ public class ConfigRefreshComponent {
           TimeUnit.SECONDS.sleep(1);
         }
       } catch (IOException | InterruptedException e) {
-        LOGGER.error("读取配置文件异常", e);
+        log.error("读取配置文件异常", e);
       }
     }
 

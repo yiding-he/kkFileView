@@ -241,8 +241,8 @@ public class FileHandlerService implements InitializingBean {
      * loadPdf2jpgCache 图片访问集合
      */
     public List<String> pdf2jpg(String fileNameFilePath, String pdfFilePath, String pdfName, FileAttribute fileAttribute) throws Exception {
-        boolean forceUpdatedCache = fileAttribute.forceUpdatedCache();
-        boolean usePasswordCache = fileAttribute.getUsePasswordCache();
+        boolean forceUpdatedCache = fileAttribute.isForceUpdatedCache();
+        boolean usePasswordCache = fileAttribute.isUsePasswordCache();
         String filePassword = fileAttribute.getFilePassword();
         String pdfPassword = null;
         PDDocument doc = null;
@@ -417,7 +417,7 @@ public class FileHandlerService implements InitializingBean {
     public static String getSubString(String str, String posStr) {
         return str.substring(str.indexOf(posStr) + posStr.length());
     }
-    
+
     /**
      * 获取文件属性
      *
@@ -429,8 +429,6 @@ public class FileHandlerService implements InitializingBean {
         String suffix;
         FileType type;
         String originFileName; //原始文件名
-        String outFilePath; //生成文件的路径
-        String originFilePath; //原始文件路径
         String fullFileName = WebUtils.getUrlParameterReg(url, "fullfilename");
         String compressFileKey = WebUtils.getUrlParameterReg(url, "kkCompressfileKey"); //压缩包指定特殊符号
         if (StringUtils.hasText(fullFileName)) {
@@ -460,9 +458,9 @@ public class FileHandlerService implements InitializingBean {
                 originFileName = URLDecoder.decode(originFileName, uriEncoding); //压缩包文件中文编码问题
                 attribute.setSkipDownLoad(true);
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
         url = WebUtils.encodeUrlFileName(url);
@@ -477,16 +475,14 @@ public class FileHandlerService implements InitializingBean {
         boolean isHtmlView = suffix.equalsIgnoreCase("xls") || suffix.equalsIgnoreCase("xlsx") || suffix.equalsIgnoreCase("csv") || suffix.equalsIgnoreCase("xlsm") || suffix.equalsIgnoreCase("xlt") || suffix.equalsIgnoreCase("xltm") || suffix.equalsIgnoreCase("et") || suffix.equalsIgnoreCase("ett") || suffix.equalsIgnoreCase("xlam");
         String cacheFilePrefixName = originFileName.substring(0, originFileName.lastIndexOf(".")) + suffix + "."; //这里统一文件名处理 下面更具类型 各自添加后缀
         String cacheFileName = this.getCacheFileName(type, originFileName, cacheFilePrefixName, isHtmlView, isCompressFile);
-        outFilePath = fileDir + cacheFileName;
-        originFilePath = fileDir + originFileName;
         String cacheListName = cacheFilePrefixName + "ListName";  //文件列表缓存文件名
         attribute.setType(type);
         attribute.setName(originFileName);
         attribute.setCacheName(cacheFileName);
         attribute.setCacheListName(cacheListName);
         attribute.setHtmlView(isHtmlView);
-        attribute.setOutFilePath(outFilePath);
-        attribute.setOriginFilePath(originFilePath);
+        attribute.setOutFilePath(fileDir + attribute.getCacheName());
+        attribute.setOriginFilePath(fileDir + attribute.getName());
         attribute.setSuffix(suffix);
         attribute.setUrl(url);
         if (req != null) {
@@ -529,7 +525,7 @@ public class FileHandlerService implements InitializingBean {
      *
      * @return 文件名
      */
-    private String getCacheFileName(FileType type, String originFileName, String cacheFilePrefixName, boolean isHtmlView, boolean isCompressFile) {
+    public static String getCacheFileName(FileType type, String originFileName, String cacheFilePrefixName, boolean isHtmlView, boolean isCompressFile) {
         String cacheFileName;
         if (type.equals(FileType.OFFICE)) {
             cacheFileName = cacheFilePrefixName + (isHtmlView ? "html" : "pdf"); //生成文件添加类型后缀 防止同名文件

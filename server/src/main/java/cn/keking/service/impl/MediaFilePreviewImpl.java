@@ -13,7 +13,6 @@ import org.bytedeco.javacv.FFmpegFrameRecorder;
 import org.bytedeco.javacv.Frame;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.util.ObjectUtils;
 
 import java.io.File;
 
@@ -41,7 +40,7 @@ public class MediaFilePreviewImpl implements FilePreview {
         String suffix = fileAttribute.getSuffix();
         String cacheName = fileAttribute.getCacheName();
         String outFilePath = fileAttribute.getOutFilePath();
-        boolean forceUpdatedCache = fileAttribute.forceUpdatedCache();
+        boolean forceUpdatedCache = fileAttribute.isForceUpdatedCache();
         FileType type = fileAttribute.getType();
         String[] mediaTypesConvert = FileType.MEDIA_CONVERT_TYPES;  //获取支持的转换格式
         boolean mediaTypes = false;

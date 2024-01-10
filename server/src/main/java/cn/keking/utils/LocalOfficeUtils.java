@@ -1,5 +1,6 @@
 package cn.keking.utils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jodconverter.core.util.OSUtils;
 
 import java.io.BufferedReader;
@@ -32,7 +33,9 @@ public class LocalOfficeUtils {
             properties.load(bufferedReader);
             ConfigUtils.restorePropertiesFromEnvFormat(properties);
         } catch (Exception ignored) {}
-        String officeHome = properties.getProperty(OFFICE_HOME_KEY);
+        String officeHome = StringUtils.firstNonBlank(
+          properties.getProperty(OFFICE_HOME_KEY)
+        );
         if (officeHome != null && !DEFAULT_OFFICE_HOME_VALUE.equals(officeHome)) {
             return new File(officeHome);
         }
