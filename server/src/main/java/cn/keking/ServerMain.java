@@ -15,7 +15,7 @@ import org.springframework.util.StopWatch;
 
 @SpringBootApplication
 @ComponentScan({
-  "cn.keking.*",
+  "cn.keking",
   "com.bsteam.bsm.channel"
 })
 @EnableScheduling
